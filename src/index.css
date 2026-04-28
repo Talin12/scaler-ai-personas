@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+/* App shell polish (Tailwind handles most styling). */
+:root {
+  --accent: #ff6b35;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #0b0d12;
+}
