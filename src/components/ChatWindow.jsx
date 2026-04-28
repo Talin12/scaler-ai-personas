@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import MessageBubble from './MessageBubble.jsx'
 
 export default function ChatWindow({
@@ -8,9 +9,15 @@ export default function ChatWindow({
   typingNode,
   emptyStateNode,
 }) {
+  const scrollAnchorRef = useRef(null)
+
+  useEffect(() => {
+    scrollAnchorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+  }, [messages, isLoading])
+
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-3 sm:px-6">
-      <div className="mt-4 flex items-center justify-between gap-3">
+    <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col overflow-hidden px-3 sm:px-6">
+      <div className="mt-4 flex shrink-0 items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div
             className="grid h-10 w-10 place-items-center rounded-2xl text-sm font-semibold text-white"
@@ -31,7 +38,7 @@ export default function ChatWindow({
       </div>
 
       {error ? (
-        <div className="mt-3 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-100">
+        <div className="mt-3 shrink-0 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-100">
           {error}
         </div>
       ) : null}
@@ -63,10 +70,11 @@ export default function ChatWindow({
                 </div>
               </div>
             ) : null}
+
+            <div ref={scrollAnchorRef} />
           </div>
         )}
       </div>
     </div>
   )
 }
-

@@ -6,7 +6,7 @@ A clean, mobile-responsive, ChatGPT-style web app with a Scaler-inspired orange 
 
 ## Live link
 
-[DEPLOYED_URL]
+[\[DEPLOYED_URL\]](https://scaler-ai-personas.vercel.app/)
 
 ## Screenshots
 

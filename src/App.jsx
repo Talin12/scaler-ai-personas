@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import ChatWindow from './components/ChatWindow.jsx'
 import PersonaSwitcher from './components/PersonaSwitcher.jsx'
 import SuggestionChips from './components/SuggestionChips.jsx'
@@ -83,8 +83,6 @@ export default function App() {
   const [activePersonaId, setActivePersonaId] = useState(personas[0].id)
   const activePersona = personas.find((p) => p.id === activePersonaId) ?? personas[0]
 
-  // OpenAI-style history (OpenRouter chat completions):
-  // { role: "user" | "assistant", content: string }
   const [history, setHistory] = useState([])
   const [timestamps, setTimestamps] = useState([])
   const [ids, setIds] = useState([])
@@ -93,11 +91,6 @@ export default function App() {
   const [error, setError] = useState('')
 
   const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY
-  const scrollAnchorRef = useRef(null)
-
-  useEffect(() => {
-    scrollAnchorRef.current?.scrollIntoView({ block: 'end' })
-  }, [history, isLoading])
 
   function resetConversation(nextPersonaId) {
     setActivePersonaId(nextPersonaId)
@@ -170,10 +163,10 @@ export default function App() {
   )
 
   return (
-    <div className="flex h-full min-h-dvh flex-col bg-[#0b0d12] text-white">
+    <div className="flex h-dvh flex-col bg-[#0b0d12] text-white">
       <PersonaSwitcher personas={personas} activePersonaId={activePersonaId} onSelect={resetConversation} />
 
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
         <ChatWindow
           persona={activePersona}
           messages={history.map((m, idx) => ({
@@ -188,9 +181,7 @@ export default function App() {
           emptyStateNode={emptyStateNode}
         />
 
-        <div ref={scrollAnchorRef} />
-
-        <div className="sticky bottom-0 mt-4 border-t border-white/10 bg-[#0b0d12]/80 backdrop-blur supports-[backdrop-filter]:bg-[#0b0d12]/60">
+        <div className="shrink-0 border-t border-white/10 bg-[#0b0d12]/80 backdrop-blur supports-[backdrop-filter]:bg-[#0b0d12]/60">
           <div className="mx-auto w-full max-w-5xl px-3 py-3 sm:px-6">
             <div className="flex items-end gap-2">
               <textarea
@@ -223,7 +214,7 @@ export default function App() {
               </div>
               <div className="hidden sm:block">
                 Active persona:{' '}
-                <span className="font-semibold text-white" style={{ color: activePersona.color }}>
+                <span className="font-semibold" style={{ color: activePersona.color }}>
                   {activePersona.name}
                 </span>
               </div>
