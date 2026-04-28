@@ -1,0 +1,17 @@
+# Reflection
+
+## What Worked
+
+Grounding each persona in specific, verified real-world facts was the single biggest quality driver in this project. When I added that Anshuman was a two-time ACM ICPC World Finalist who built Facebook Messenger and set up the London office, the model started referencing those facts naturally in responses — without being prompted to. Same with Abhimanyu: including his Fab.com discovery-via-open-source story made responses about networking feel personal and earned rather than generic. For Kshitij, pulling his actual GitHub repos (Splitwise, Snake & Ladder LLD problems) gave the model concrete anchors to reference in DSA and LLD answers. The few-shot examples were the biggest single quality multiplier — they set the tone, length, and follow-up question pattern that every subsequent response tried to match.
+
+## What GIGO Taught Me
+
+GIGO — Garbage In, Garbage Out — was the most visceral lesson of this assignment. Early in the process, I tested a minimal prompt: "You are Anshuman Singh, co-founder of Scaler. Be helpful and friendly." The response was indistinguishable from a generic chatbot — motivational but hollow, with no trace of who Anshuman actually is. The moment I added that he was a two-time ACM ICPC World Finalist, that he built Facebook Messenger, that he left a high-paying job in London because he believed Indian tech education was broken — the responses transformed. The model started saying things like "from my ICPC days" and "at Facebook, we cared about how you think under pressure" without being told to. The quality of the output was a direct, measurable function of the quality of the input. Lazy prompts produce lazy personas. Researched prompts produce responses that feel like the real person. There are no shortcuts at the prompt level.
+
+## What I Would Improve
+
+Three things stand out. First, conversation memory — right now each response only has the current session's context, but there's no callback to earlier exchanges in a meaningful way. A persona that remembers "you mentioned you're from a tier-3 college earlier" would feel dramatically more human. Second, topic-aware tone calibration — Anshuman should be more intense and data-driven when discussing DSA prep, and more reflective when discussing the founding story of Scaler. A single flat style instruction doesn't capture that range. Third, ideally I'd fine-tune on actual transcripts from their YouTube talks, podcast interviews, and LinkedIn posts — the few-shot examples I wrote are based on research but are still approximations. Real transcripts would produce far higher fidelity.
+
+## Technical Learnings
+
+The API journey was unexpectedly educational. I started with Anthropic's API but needed paid credits to use it. Switched to Google Gemini's free tier, which returned a `limit: 0` error — meaning the free tier was blocked at the Google Cloud project level, not a rate limit I'd hit but a configuration issue. Moved to OpenRouter, where hardcoded free model IDs kept returning 404s as models were deprecated or renamed. The fix was using `openrouter/auto` — OpenRouter's own free router that dynamically selects from whatever free models are currently available, making the app resilient to individual model deprecations. The key technical lesson: free tiers are fragile. Building model-agnostic, with a router rather than a hardcoded model ID, is the right approach for any project that needs to stay free and functional over time.
